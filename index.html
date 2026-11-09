@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Discover, search, and organize your favorite movies with ClineFlix."
+    />
+    <title>ClineFlix — Your movie collection</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="ClineFlix home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M5 4.75h14a1.75 1.75 0 0 1 1.75 1.75v11A1.75 1.75 0 0 1 19 19.25H5a1.75 1.75 0 0 1-1.75-1.75v-11A1.75 1.75 0 0 1 5 4.75Z" stroke="currentColor" stroke-width="1.7" />
+              <path d="M8 4.75v14.5M16 4.75v14.5M3.5 9h4.25m8.5 0h4.25M3.5 15h4.25m8.5 0h4.25" stroke="currentColor" stroke-width="1.7" />
+            </svg>
+          </span>
+          <span class="brand-name">cline<span>flix</span></span>
+        </a>
+        <div class="topbar-note"><span class="live-dot"></span>Your personal movie library</div>
+        <button class="button button-primary create-button" id="open-modal" type="button">
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M10 4v12m6-6H4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+          </svg>
+          Create Movie
+        </button>
+      </header>
+
+      <main>
+        <section class="intro" aria-labelledby="page-title">
+          <div class="eyebrow"><span class="eyebrow-line"></span>THE MOVIE CLUB</div>
+          <h1 id="page-title">Find your next <span>favorite.</span></h1>
+          <p>Every great movie night starts with a little inspiration.</p>
+        </section>
+
+        <section class="choice-panel" aria-labelledby="choice-title">
+          <div class="choice-copy">
+            <div class="section-kicker">YOUR MOVIE NIGHT</div>
+            <h2 id="choice-title">Need a little inspiration?</h2>
+            <p>Tell us what you’re in the mood for and get a pick from your collection.</p>
+          </div>
+          <button class="button button-primary preference-button" id="open-assistant" type="button">✦ Help me choose</button>
+        </section>
+
+        <section class="toolbar" aria-label="Search and sort movies">
+          <form class="search-form" id="search-form" role="search">
+            <label class="sr-only" for="search-input">Search movies</label>
+            <svg class="search-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <circle cx="8.75" cy="8.75" r="5.75" stroke="currentColor" stroke-width="1.6" />
+              <path d="m13 13 4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+            </svg>
+            <input id="search-input" type="search" placeholder="Search movies..." autocomplete="off" />
+            <button class="button button-search" type="submit">Search</button>
+          </form>
+          <label class="sort-control">
+            <span>Sort by</span>
+            <select id="sort-select" aria-label="Sort movies">
+              <option value="rating">Top rated</option>
+              <option value="newest">Release year: newest</option>
+              <option value="oldest">Release year: oldest</option>
+            </select>
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </label>
+        </section>
+
+        <section class="library" aria-labelledby="library-title">
+          <div class="library-heading">
+            <div>
+              <div class="section-kicker">PICK YOUR GENRE</div>
+              <h2 id="library-title">Explore movies <span id="movie-count">08</span></h2>
+            </div>
+            <div class="filter-list" id="genre-filters" aria-label="Filter by genre">
+              <button class="filter-chip is-active" type="button" data-genre="All" aria-pressed="true">All movies</button>
+              <button class="filter-chip" type="button" data-genre="Action" aria-pressed="false">Action</button>
+              <button class="filter-chip" type="button" data-genre="Drama" aria-pressed="false">Drama</button>
+              <button class="filter-chip" type="button" data-genre="Sci-Fi" aria-pressed="false">Sci-Fi</button>
+              <button class="filter-chip" type="button" data-genre="Comedy" aria-pressed="false">Comedy</button>
+            </div>
+          </div>
+          <div class="movie-grid" id="movie-grid" aria-live="polite"></div>
+          <div class="empty-state" id="empty-state" hidden>
+            <span class="empty-icon" aria-hidden="true">⌕</span>
+            <h3>No movies found</h3>
+            <p>Try another title or genre, or add a new movie to your collection.</p>
+            <button class="button button-primary" id="empty-create" type="button">Create a movie</button>
+          </div>
+        </section>
+      </main>
+      <footer class="footer"><span class="footer-mark">C</span> Made for the love of movies <span class="footer-separator">·</span> <span id="footer-year"></span></footer>
+    </div>
+
+    <dialog class="movie-dialog" id="movie-dialog" aria-labelledby="dialog-title">
+      <form class="dialog-form" id="movie-form">
+        <div class="dialog-heading">
+          <div>
+            <div class="section-kicker">GROW YOUR COLLECTION</div>
+            <h2 id="dialog-title">Create a movie</h2>
+          </div>
+          <button class="icon-button" id="close-modal" type="button" aria-label="Close dialog">
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" /></svg>
+          </button>
+        </div>
+        <label class="form-field">Movie title<input name="title" type="text" placeholder="e.g. The Grand Adventure" maxlength="60" required /></label>
+        <label class="form-field">About the movie<textarea name="about" placeholder="What makes this one worth watching?" maxlength="180" rows="3" required></textarea></label>
+        <div class="form-row">
+          <label class="form-field">Genre
+            <select name="genre" required>
+              <option value="Action">Action</option>
+              <option value="Drama">Drama</option>
+              <option value="Sci-Fi">Sci-Fi</option>
+              <option value="Comedy">Comedy</option>
+            </select>
+          </label>
+          <label class="form-field">Release year<input name="year" type="number" min="1888" max="2100" placeholder="2024" required /></label>
+        </div>
+        <div class="form-row">
+          <label class="form-field">Rating <span class="field-hint">(out of 10)</span><input name="rating" type="number" min="0" max="10" step="0.1" placeholder="8.5" required /></label>
+          <label class="form-field">Poster image URL <span class="field-hint">(optional)</span><input name="image" type="url" placeholder="https://..." /></label>
+        </div>
+        <div class="dialog-actions">
+          <button class="button button-quiet" id="cancel-modal" type="button">Cancel</button>
+          <button class="button button-primary" type="submit">Add to collection <span aria-hidden="true">↗</span></button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog class="movie-dialog assistant-dialog" id="assistant-dialog" aria-labelledby="assistant-title">
+      <form class="dialog-form" id="assistant-form">
+        <div class="dialog-heading">
+          <div>
+            <div class="section-kicker">YOUR MOVIE NIGHT</div>
+            <h2 id="assistant-title">What are you in the mood for?</h2>
+          </div>
+          <button class="icon-button" id="close-assistant" type="button" aria-label="Close assistant">
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" /></svg>
+          </button>
+        </div>
+        <p class="assistant-intro">Choose a mood and a genre, and we’ll pick a movie from your library.</p>
+        <div class="assistant-fields">
+          <label class="preference-field">
+            <span>Mood</span>
+            <select name="mood">
+              <option value="any">Anything goes</option>
+              <option value="feel-good">Feel-good</option>
+              <option value="thrilling">Thrilling</option>
+              <option value="thought-provoking">Thought-provoking</option>
+              <option value="funny">Funny</option>
+              <option value="mind-bending">Mind-bending</option>
+            </select>
+          </label>
+          <label class="preference-field">
+            <span>Genre</span>
+            <select name="genre">
+              <option value="any">Any genre</option>
+              <option value="Action">Action</option>
+              <option value="Drama">Drama</option>
+              <option value="Sci-Fi">Sci-Fi</option>
+              <option value="Comedy">Comedy</option>
+            </select>
+          </label>
+          <label class="preference-field">
+            <span>Time available</span>
+            <select name="runtime">
+              <option value="any">Any runtime</option>
+              <option value="short">Under 90 min</option>
+              <option value="medium">90–120 min</option>
+              <option value="long">Over 120 min</option>
+            </select>
+          </label>
+        </div>
+        <p class="runtime-note">Runtime isn’t included in the movie details yet, so time available won’t affect this pick.</p>
+        <button class="button button-primary assistant-submit" type="submit">Find my movie <span aria-hidden="true">↗</span></button>
+        <section class="recommendation-result" id="recommendation-result" aria-live="polite" hidden>
+          <div class="section-kicker">YOUR PICK</div>
+          <h3 id="recommendation-title"></h3>
+          <p class="recommendation-meta" id="recommendation-meta"></p>
+          <p id="recommendation-reason"></p>
+          <span class="demo-note">Local demo suggestion — not AI-generated.</span>
+        </section>
+      </form>
+    </dialog>
+  </body>
+</html>
